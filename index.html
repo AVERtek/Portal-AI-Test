@@ -35,7 +35,7 @@
 
   <!-- AR Portal Viewer -->
   <model-viewer 
-    src="https://ar-code.com/assets/models/ar-portal-mountain-village.glb" 
+    src="Models/PORTAL_MOUNTAIN_VILLAGE.glb" 
     alt="AR Portal"
     ar 
     ar-modes="webxr scene-viewer quick-look"
@@ -45,7 +45,7 @@
     loading="eager"
     shadow-intensity="1"
     exposure="1"
-    ios-src="https://ar-code.com/assets/models/ar-portal-mountain-village.usdz">
+    ios-src="Models/portal_mountain_village.usdz">
   </model-viewer>
 
   <!-- UI Overlay -->
@@ -100,10 +100,10 @@
     }
   </style>
 </head>
-<body>
+<body> -->
 
   <!-- 3D Portal Viewer -->
- < <model-viewer 
+  <!--<model-viewer 
     src="Models/wooden_door_-_low_poly_animated.glb" 
     alt="AR Portal"
     ar 
@@ -117,10 +117,10 @@
     exposure="1"
     environment-image="images/WebPortal Skybox1024.hdr"
     ios-src="portal.usdz">
-  </model-viewer>
+  </model-viewer> -->
 
   <!-- UI Overlay -->
-  <div class="ui-overlay">
+  <!--<div class="ui-overlay">
     <div class="scene-button" onclick="loadScene('lifestyle')">🏡 Lifestyle</div>
     <div class="scene-button" onclick="loadScene('amenities')">💪 Amenities</div>
     <div class="scene-button" onclick="loadScene('neighborhood')">🗺️ Neighborhood</div>
@@ -139,48 +139,4 @@
 </html> -->
 
 
-<!--<!DOCTYPE html>
-<html>
-<head>
-   <meta charset="UTF-8">
- <meta http-equiv="X-UA-Compatible" content="IE=edge">
- <meta name="viewport" content="width=device-width, initial-scale=1">
- <title>Portal Test</title>
-  
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
-  <style>
-    model-viewer {
-      width: 100%;
-      height: 100vh;
-      display: block;
-    }
-    #ar-button {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 10px 20px;
-    }
-  </style>
-</head>
-<body>
-  <model-viewer src="Models/wooden_door_-_low_poly_animated.glb" ar ar-scale="auto" autoplay animation-name="" interaction-prompt="none" camera-controls auto-rotate>
-    <button id="ar-button" slot="ar-button">Start AR</button>
-  </model-viewer>
 
-  <script>
-    const modelViewer = document.querySelector('model-viewer');
-    const arButton = document.getElementById('ar-button');
-    modelViewer.addEventListener('load', () => {
-      console.log("Model loaded successfully!");
-      console.log("AR Available:", modelViewer.canActivateAR); // Crucial check!
-      arButton.disabled = !modelViewer.canActivateAR;
-    });
-    modelViewer.addEventListener('error', (error) => {
-      console.error("Model loading error:", error);
-    });
-    arButton.addEventListener('click', () => { modelViewer.activateAR(); });
-  </script>
-</body>
-</html> -->
