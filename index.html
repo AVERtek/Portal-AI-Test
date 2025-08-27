@@ -34,19 +34,20 @@
 <body>
 
   <!-- AR Portal Viewer -->
-  <model-viewer 
-    src="Models/PORTAL_MOUNTAIN_VILLAGE.glb" 
-    alt="AR Portal"
-    ar 
-    ar-modes="webxr scene-viewer quick-look"
-    camera-controls 
-    autoplay
-    reveal="interaction"
-    loading="eager"
-    shadow-intensity="1"
-    exposure="1"
-    ios-src="Models/portal_mountain_village.usdz">
-  </model-viewer>
+ <model-viewer 
+  src="Models/PORTAL_MOUNTAIN_VILLAGE.glb" 
+  alt="AR Portal"
+  ar 
+  ar-modes="webxr scene-viewer quick-look"
+  camera-controls 
+  auto-rotate
+  reveal="interaction"
+  loading="eager"
+  shadow-intensity="1"
+  exposure="1"
+  environment-image="neutral"
+  ios-src="Models/portal_mountain_village.usdz">
+</model-viewer>
 
   <!-- UI Overlay -->
   <div class="ui-overlay">
