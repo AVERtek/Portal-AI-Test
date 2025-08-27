@@ -2,17 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AR Portal Experience</title>
+  <title>AR Apartment Experience</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
       margin: 0;
-      background-color: #000;
       font-family: 'Segoe UI', sans-serif;
-    }
-    model-viewer {
-      width: 100vw;
-      height: 100vh;
+      background: url('images/apartment_background.jpg') no-repeat center center fixed;
+      background-size: cover;
     }
     .ui-overlay {
       position: absolute;
@@ -22,122 +19,58 @@
       color: white;
     }
     .scene-button {
-      background: rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.6);
       border: 1px solid white;
-      padding: 10px 15px;
-      margin: 5px;
+      padding: 12px 18px;
+      margin: 8px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 18px;
+      color: white;
+      border-radius: 6px;
+    }
+    model-viewer {
+      display: none; /* Hidden until a button is clicked */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 5;
     }
   </style>
 </head>
 <body>
 
-  <!-- AR Portal Viewer -->
- <model-viewer 
-  src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" 
-  alt="AR Portal"
-  ar 
-  ar-modes="webxr scene-viewer quick-look"
-  camera-controls 
-  auto-rotate
-  reveal="interaction"
-  loading="eager"
-  shadow-intensity="1"
-  exposure="1"
-  environment-image="neutral"
-  ios-src="Models/AR-Code-1637477629846.usdz">
-</model-viewer>
-
-  <!-- UI Overlay -->
+  <!-- UI Buttons -->
   <div class="ui-overlay">
-    <div class="scene-button" onclick="loadScene('lifestyle')">🏡 Lifestyle</div>
-    <div class="scene-button" onclick="loadScene('amenities')">💪 Amenities</div>
-    <div class="scene-button" onclick="loadScene('neighborhood')">🗺️ Neighborhood</div>
-    <div class="scene-button" onclick="loadScene('seasonal')">🍂 Seasonal</div>
+    <div class="scene-button" onclick="launchAR('Models/lifestyle.glb', 'Models/lifestyle.usdz')">🏡 Lifestyle</div>
+    <div class="scene-button" onclick="launchAR('Models/amenities.glb', 'Models/amenities.usdz')">💪 Amenities</div>
+    <div class="scene-button" onclick="launchAR('Models/neighborhood.glb', 'Models/neighborhood.usdz')">🗺️ Neighborhood</div>
+    <div class="scene-button" onclick="launchAR('Models/seasonal.glb', 'Models/seasonal.usdz')">🍂 Seasonal</div>
   </div>
 
+  <!-- Hidden Model Viewer -->
+  <model-viewer id="arViewer"
+    alt="AR Experience"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+    auto-rotate
+    reveal="interaction"
+    loading="eager"
+    shadow-intensity="1"
+    exposure="1"
+    environment-image="neutral">
+  </model-viewer>
+
   <script>
-    function loadScene(sceneName) {
-      alert(`Loading ${sceneName} scene...`);
-      // Future: Swap model-viewer src or trigger animations
+    function launchAR(glbPath, usdzPath) {
+      const viewer = document.getElementById('arViewer');
+      viewer.setAttribute('src', glbPath);
+      viewer.setAttribute('ios-src', usdzPath);
+      viewer.style.display = 'block';
     }
   </script>
 
 </body>
 </html>
- 
-
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>AR Portal Experience</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      background-color: #000;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    model-viewer {
-      width: 100vw;
-      height: 100vh;
-    }
-    .ui-overlay {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      z-index: 10;
-      color: white;
-    }
-    .scene-button {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid white;
-      padding: 10px 15px;
-      margin: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-  </style>
-</head>
-<body> -->
-
-  <!-- 3D Portal Viewer -->
-  <!--<model-viewer 
-    src="Models/wooden_door_-_low_poly_animated.glb" 
-    alt="AR Portal"
-    ar 
-    ar-modes="webxr scene-viewer quick-look"
-    camera-controls 
-    ar-scale="auto" 
-    autoplay
-    animation-name="1_open_closed_right"
-    interaction-prompt="none"
-    shadow-intensity="1"
-    exposure="1"
-    environment-image="images/WebPortal Skybox1024.hdr"
-    ios-src="portal.usdz">
-  </model-viewer> -->
-
-  <!-- UI Overlay -->
-  <!--<div class="ui-overlay">
-    <div class="scene-button" onclick="loadScene('lifestyle')">🏡 Lifestyle</div>
-    <div class="scene-button" onclick="loadScene('amenities')">💪 Amenities</div>
-    <div class="scene-button" onclick="loadScene('neighborhood')">🗺️ Neighborhood</div>
-    <div class="scene-button" onclick="loadScene('seasonal')">🍂 Seasonal</div>
-  </div>
-
-  <script>
-    function loadScene(sceneName) {
-      // Placeholder for scene logic
-      alert(`Loading ${sceneName} scene...`);
-      // You can later swap models, trigger animations, or redirect to deeper AR layers
-    }
-  </script>
-
-</body>
-</html> -->
-
-
-
