@@ -28,14 +28,27 @@
       color: white;
       border-radius: 6px;
     }
+    .close-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 11;
+      background: rgba(255,255,255,0.8);
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
     model-viewer {
-      display: none; /* Hidden until a button is clicked */
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       z-index: 5;
+      background-color: #000;
+      display: none;
     }
   </style>
 </head>
@@ -49,7 +62,10 @@
     <div class="scene-button" onclick="launchAR('Models/PORTAL_MOUNTAIN_VILLAGE.glb', 'Models/seasonal.usdz')">🍂 Seasonal</div>
   </div>
 
-  <!-- Hidden Model Viewer -->
+  <!-- Close Button -->
+  <button class="close-button" onclick="closeAR()">✖ Close AR</button>
+
+  <!-- Model Viewer -->
   <model-viewer id="arViewer"
     alt="AR Experience"
     ar
@@ -69,6 +85,13 @@
       viewer.setAttribute('src', glbPath);
       viewer.setAttribute('ios-src', usdzPath);
       viewer.style.display = 'block';
+    }
+
+    function closeAR() {
+      const viewer = document.getElementById('arViewer');
+      viewer.style.display = 'none';
+      viewer.removeAttribute('src');
+      viewer.removeAttribute('ios-src');
     }
   </script>
 
