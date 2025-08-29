@@ -11,13 +11,14 @@
       background: url('images/WebPortal Skybox1024.jpg') no-repeat center center fixed;
       background-size: cover;
     }
+
     .ui-overlay {
       position: absolute;
       top: 20px;
       left: 20px;
       z-index: 10;
-      color: white;
     }
+
     .scene-button {
       background: rgba(0,0,0,0.6);
       border: 1px solid white;
@@ -28,6 +29,7 @@
       color: white;
       border-radius: 6px;
     }
+
     .close-button {
       position: absolute;
       top: 20px;
@@ -40,6 +42,7 @@
       cursor: pointer;
       border-radius: 6px;
     }
+
     model-viewer {
       position: fixed;
       top: 0;
@@ -47,13 +50,35 @@
       width: 100vw;
       height: 100vh;
       z-index: 5;
-      background-color: #000;
-      display: none;
+      background-color: transparent;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
+
     @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .spinner {
+      border: 6px solid rgba(255,255,255,0.3);
+      border-top: 6px solid white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 4px;
+      background: #00ffcc;
+      z-index: 15;
+      transition: width 0.3s ease;
+    }
   </style>
 </head>
 <body>
@@ -64,48 +89,79 @@
     <div class="scene-button" onclick="launchAR('Models/wooden_door_-_low_poly_animated.glb', 'Models/amenities.usdz')">💪 Amenities</div>
     <div class="scene-button" onclick="launchAR('Models/zefiro.glb', 'Models/neighborhood.usdz')">🗺️ Neighborhood</div>
     <div class="scene-button" onclick="launchAR('Models/PORTAL_MOUNTAIN_VILLAGE.glb', 'Models/seasonal.usdz')">🍂 Seasonal</div>
-    <div class="scene-button" onclick="launchAR('https://modelviewer.dev/shared-assets/models/Astronaut.glb', 'Models/astronaut.usdz')">🗺️ Astronaut</div>
+    <div class="scene-button" onclick="launchAR('https://modelviewer.dev/shared-assets/models/Astronaut.glb', 'https://modelviewer.dev/shared-assets/models/Astronaut.usdz')">🧑‍🚀 Astronaut</div>
   </div>
 
   <!-- Close Button -->
   <button class="close-button" onclick="closeAR()">✖ Close AR</button>
 
-  <!-- Model Viewer -->
- <model-viewer id="arViewer"
-  alt="AR Experience"
-  ar
-  ar-modes="webxr scene-viewer quick-look"
-  camera-controls
-  auto-rotate
-  reveal="auto"
-  loading="eager"
-  shadow-intensity="1"
-  exposure="1"
-  environment-image="neutral"
-  poster="images/WebPortal Skybox1024.jpg"
-  style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 5; background-color: transparent;">
+  <!-- Progress Bar -->
+  <div id="progress-bar"></div>
 
-  <!-- Loading Spinner or Message -->
-  <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: white; font-size: 24px;">
-    <div class="spinner" style="border: 6px solid rgba(255,255,255,0.3); border-top: 6px solid white; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;"></div>
-    <p style="margin-top: 20px;">Loading AR Experience...</p>
-  </div>
-</model-viewer>
-  
+  <!-- Model Viewer -->
+  <model-viewer id="arViewer"
+    alt="AR Experience"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+    auto-rotate
+    reveal="auto"
+    loading="eager"
+    shadow-intensity="1"
+    exposure="1"
+    environment-image="neutral"
+    poster="images/WebPortal Skybox1024.jpg">
+
+    <!-- Spinner -->
+    <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: white; font-size: 24px;">
+      <div class="spinner"></div>
+      <p style="margin-top: 20px;">Loading AR Experience...</p>
+    </div>
+
+    <!-- AR Button -->
+    <button slot="ar-button" style="background: #00ffcc; color: black; padding: 12px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
+      Launch AR
+    </button>
+  </model-viewer>
+
   <script>
+    const viewer = document.getElementById('arViewer');
+    const progressBar = document.getElementById('progress-bar');
+
     function launchAR(glbPath, usdzPath) {
-      const viewer = document.getElementById('arViewer');
       viewer.setAttribute('src', glbPath);
       viewer.setAttribute('ios-src', usdzPath);
-      viewer.style.display = 'block';
+      viewer.style.opacity = '1';
     }
 
     function closeAR() {
-      const viewer = document.getElementById('arViewer');
-      viewer.style.display = 'none';
+      viewer.style.opacity = '0';
       viewer.removeAttribute('src');
       viewer.removeAttribute('ios-src');
     }
+
+    viewer.addEventListener('progress', (event) => {
+      const percent = Math.round(event.detail.totalProgress * 100);
+      progressBar.style.width = percent + '%';
+    });
+
+    viewer.addEventListener('load', () => {
+      progressBar.style.width = '100%';
+      setTimeout(() => {
+        progressBar.style.width = '0%';
+      }, 500);
+    });
+
+    viewer.addEventListener('ar-status', (event) => {
+      if (event.detail.status === 'failed') {
+        alert('AR is only available on supported mobile devices.');
+      }
+    });
+
+    viewer.addEventListener('error', (e) => {
+      console.error("Model Viewer Error:", e);
+      alert("Failed to load model. Check file path and server settings.");
+    });
   </script>
 
 </body>
