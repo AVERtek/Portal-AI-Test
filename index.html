@@ -66,16 +66,11 @@
       transition: opacity 0.3s ease;
     }
 
-    #ar-button-wrapper {
+    model-viewer::part(ar-button) {
       position: fixed;
       bottom: 20px;
       right: 20px;
       z-index: 30;
-      pointer-events: none;
-    }
-
-    #ar-button-wrapper button[slot="ar-button"] {
-      pointer-events: auto;
       padding: 16px 24px;
       font-size: 18px;
       background: #00ffcc;
@@ -149,12 +144,10 @@
       <p style="margin-top: 20px;">Loading AR Experience...</p>
     </div>
 
-  </model-viewer>
-
-  <!-- AR Button Wrapper -->
-  <div id="ar-button-wrapper">
+    <!-- AR Button (inside model-viewer for proper slot binding) -->
     <button slot="ar-button">Launch AR</button>
-  </div>
+
+  </model-viewer>
 
   <script>
     const viewer = document.getElementById('arViewer');
