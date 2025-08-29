@@ -66,6 +66,26 @@
       transition: opacity 0.3s ease;
     }
 
+    #ar-button-wrapper {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    #ar-button-wrapper button[slot="ar-button"] {
+      pointer-events: auto;
+      padding: 16px 24px;
+      font-size: 18px;
+      background: #00ffcc;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
@@ -129,22 +149,12 @@
       <p style="margin-top: 20px;">Loading AR Experience...</p>
     </div>
 
-    <!-- AR Button (safe for mobile) -->
-    <button slot="ar-button" style="
-      margin: 20px;
-      padding: 16px 24px;
-      font-size: 18px;
-      background: #00ffcc;
-      color: black;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      z-index: 20;
-    ">
-      Launch AR
-    </button>
-
   </model-viewer>
+
+  <!-- AR Button Wrapper -->
+  <div id="ar-button-wrapper">
+    <button slot="ar-button">Launch AR</button>
+  </div>
 
   <script>
     const viewer = document.getElementById('arViewer');
