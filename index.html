@@ -50,6 +50,10 @@
       background-color: #000;
       display: none;
     }
+    @keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
   </style>
 </head>
 <body>
@@ -67,19 +71,27 @@
   <button class="close-button" onclick="closeAR()">✖ Close AR</button>
 
   <!-- Model Viewer -->
-  <model-viewer id="arViewer"
-    alt="AR Experience"
-    ar
-    ar-modes="webxr scene-viewer quick-look"
-    camera-controls
-    auto-rotate
-    reveal="interaction"
-    loading="eager"
-    shadow-intensity="1"
-    exposure="1"
-    environment-image="neutral">
-  </model-viewer>
+ <model-viewer id="arViewer"
+  alt="AR Experience"
+  ar
+  ar-modes="webxr scene-viewer quick-look"
+  camera-controls
+  auto-rotate
+  reveal="auto"
+  loading="eager"
+  shadow-intensity="1"
+  exposure="1"
+  environment-image="neutral"
+  poster="images/WebPortal Skybox1024.jpg"
+  style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 5; background-color: transparent;">
 
+  <!-- Loading Spinner or Message -->
+  <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: white; font-size: 24px;">
+    <div class="spinner" style="border: 6px solid rgba(255,255,255,0.3); border-top: 6px solid white; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;"></div>
+    <p style="margin-top: 20px;">Loading AR Experience...</p>
+  </div>
+</model-viewer>
+  
   <script>
     function launchAR(glbPath, usdzPath) {
       const viewer = document.getElementById('arViewer');
