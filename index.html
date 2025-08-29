@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AR Portal Experience</title>
+  <title>AR Apartment Experience</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
@@ -51,17 +51,7 @@
       height: 100vh;
       z-index: 5;
       background-color: transparent;
-    }
-
-    #progress-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 0%;
-      height: 4px;
-      background: #00ffcc;
-      z-index: 15;
-      transition: width 0.3s ease;
+      display: none;
     }
 
     @keyframes spin {
@@ -78,15 +68,15 @@
       animation: spin 1s linear infinite;
     }
 
-    #debug {
+    #progress-bar {
       position: fixed;
-      bottom: 10px;
-      left: 10px;
-      color: white;
-      background: black;
-      padding: 10px;
-      z-index: 999;
-      font-size: 14px;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 4px;
+      background: #00ffcc;
+      z-index: 15;
+      transition: width 0.3s ease;
     }
   </style>
 </head>
@@ -98,7 +88,7 @@
     <div class="scene-button" onclick="launchAR('Models/wooden_door_-_low_poly_animated.glb', 'Models/amenities.usdz')">💪 Amenities</div>
     <div class="scene-button" onclick="launchAR('Models/zefiro.glb', 'Models/neighborhood.usdz')">🗺️ Neighborhood</div>
     <div class="scene-button" onclick="launchAR('Models/PORTAL_MOUNTAIN_VILLAGE.glb', 'Models/seasonal.usdz')">🍂 Seasonal</div>
-    <div class="scene-button" onclick="launchAR('https://modelviewer.dev/shared-assets/models/Astronaut.glb', '')">🧑‍🚀 Astronaut</div>
+    <div class="scene-button" onclick="launchAR('https://modelviewer.dev/shared-assets/models/Astronaut.glb', 'https://modelviewer.dev/shared-assets/models/Astronaut.usdz')">🧑‍🚀 Astronaut</div>
   </div>
 
   <!-- Close Button -->
@@ -119,8 +109,7 @@
     shadow-intensity="1"
     exposure="1"
     environment-image="neutral"
-    poster="images/WebPortal Skybox1024.jpg"
-    style="display: none;">
+    poster="images/WebPortal Skybox1024.jpg">
 
     <!-- Loading Spinner -->
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: white; font-size: 24px;">
@@ -134,40 +123,29 @@
     </button>
   </model-viewer>
 
-  <!-- Debug Output -->
-  <div id="debug"></div>
-
   <script>
     const viewer = document.getElementById('arViewer');
     const progressBar = document.getElementById('progress-bar');
-    const debug = document.getElementById('debug');
 
     function isMobileDevice() {
       return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
 
-    function logDebug(message) {
-      debug.innerText = message;
-    }
-
     function launchAR(glbPath, usdzPath) {
-      viewer.src = glbPath;
-      viewer.iosSrc = usdzPath;
+      viewer.setAttribute('src', glbPath);
+      viewer.setAttribute('ios-src', usdzPath);
       viewer.style.display = 'block';
-      logDebug("Launching AR: " + (isMobileDevice() ? "Mobile" : "Desktop"));
     }
 
     function closeAR() {
       viewer.style.display = 'none';
-      viewer.src = '';
-      viewer.iosSrc = '';
-      logDebug("AR Closed");
+      viewer.removeAttribute('src');
+      viewer.removeAttribute('ios-src');
     }
 
     viewer.addEventListener('progress', (event) => {
       const percent = Math.round(event.detail.totalProgress * 100);
       progressBar.style.width = percent + '%';
-      logDebug("Loading: " + percent + "%");
     });
 
     viewer.addEventListener('load', () => {
@@ -175,18 +153,13 @@
       setTimeout(() => {
         progressBar.style.width = '0%';
       }, 500);
-      logDebug("Model Loaded");
     });
 
     viewer.addEventListener('ar-status', (event) => {
-      logDebug("AR Status: " + event.detail.status);
       if (event.detail.status === 'failed') {
         alert('AR is only available on supported mobile devices.');
       }
     });
-
-    // Initial device check
-    logDebug("Device: " + (isMobileDevice() ? "Mobile" : "Desktop"));
   </script>
 
 </body>
