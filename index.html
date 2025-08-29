@@ -1,125 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AR Portal</title>
+  <meta charset="UTF-8">
+  <title>AR Apartment Experience</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
       margin: 0;
-      background-color: #f0f0f0;
-      font-family: sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('images/WebPortal Skybox1024.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .ui-overlay {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+    }
+
+    .scene-button {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid white;
+      padding: 12px 18px;
+      margin: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      color: white;
+      border-radius: 6px;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 11;
+      background: rgba(255,255,255,0.8);
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 6px;
     }
 
     model-viewer {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100vw;
       height: 100vh;
+      z-index: 5;
+      background-color: transparent;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    /* AR Button Styling */
-    model-viewer::part(ar-button),
-    button[slot="ar-button"] {
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .spinner {
+      border: 6px solid rgba(255,255,255,0.3);
+      border-top: 6px solid white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    #progress-bar {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 100;
-      padding: 14px 22px;
-      font-size: 18px;
-      background-color: #00ccff;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      cursor: pointer;
-      animation: pulse 2s infinite;
-    }
-
-    /* Model Control Buttons */
-    .model-controls {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      z-index: 90;
-      display: flex;
-      gap: 12px;
-    }
-
-    .model-controls button {
-      padding: 10px 16px;
-      font-size: 16px;
-      background-color: #333;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    /* Optional Close AR Button Styling */
-    model-viewer::part(close-button),
-    button[slot="close-button"] {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 100;
-      padding: 10px 16px;
-      font-size: 16px;
-      background-color: #ff4444;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      cursor: pointer;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
-      50% { transform: scale(1.05); box-shadow: 0 0 10px rgba(0,0,0,0.3); }
-      100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 4px;
+      background: #00ffcc;
+      z-index: 15;
+      transition: width 0.3s ease;
     }
   </style>
 </head>
 <body>
 
-  <model-viewer
-    id="viewer"
-    src="model.glb"
-    ios-src="model.usdz"
-    ar
-    ar-modes="scene-viewer quick-look webxr"
-    camera-controls
-    auto-rotate
-    alt="3D model"
-  >
-    <button slot="ar-button">View in AR</button>
-  </model-viewer>
-
-  <div class="model-controls">
-    <button onclick="spinModel()">Spin</button>
-    <button onclick="zoomModel()">Zoom</button>
-    <button onclick="changeScene()">Scene</button>
+  <!-- UI Buttons -->
+  <div class="ui-overlay">
+    <div class="scene-button" onclick="launchAR('Models/crystal_ball.glb', 'Models/lifestyle.usdz')">🏡 Lifestyle</div>
+    <div class="scene-button" onclick="launchAR('Models/wooden_door_-_low_poly_animated.glb', 'Models/amenities.usdz')">💪 Amenities</div>
+    <div class="scene-button" onclick="launchAR('Models/zefiro.glb', 'Models/neighborhood.usdz')">🗺️ Neighborhood</div>
+    <div class="scene-button" onclick="launchAR('Models/PORTAL_MOUNTAIN_VILLAGE.glb', 'Models/seasonal.usdz')">🍂 Seasonal</div>
+    <div class="scene-button" onclick="launchAR('https://modelviewer.dev/shared-assets/models/Astronaut.glb', 'https://modelviewer.dev/shared-assets/models/Astronaut.usdz')">🧑‍🚀 Astronaut</div>
   </div>
 
+  <!-- Close Button -->
+  <button class="close-button" onclick="closeAR()">✖ Close AR</button>
+
+  <!-- Progress Bar -->
+  <div id="progress-bar"></div>
+
+  <!-- Model Viewer -->
+  <model-viewer id="arViewer"
+    alt="AR Experience"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+    auto-rotate
+    reveal="auto"
+    loading="eager"
+    shadow-intensity="1"
+    exposure="1"
+    environment-image="neutral"
+    poster="images/WebPortal Skybox1024.jpg">
+
+    <!-- Spinner -->
+    <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: white; font-size: 24px;">
+      <div class="spinner"></div>
+      <p style="margin-top: 20px;">Loading AR Experience...</p>
+    </div>
+
+    <!-- AR Button -->
+    <button slot="ar-button" style="background: #00ffcc; color: black; padding: 12px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
+      Launch AR
+    </button>
+  </model-viewer>
+
   <script>
-    const viewer = document.getElementById('viewer');
+    const viewer = document.getElementById('arViewer');
+    const progressBar = document.getElementById('progress-bar');
 
-    function spinModel() {
-      viewer.setAttribute('auto-rotate', true);
+    function launchAR(glbPath, usdzPath) {
+      viewer.setAttribute('src', glbPath);
+      viewer.setAttribute('ios-src', usdzPath);
+      viewer.style.opacity = '1';
     }
 
-    function zoomModel() {
-      viewer.cameraOrbit = '0deg 75deg 2m';
+    function closeAR() {
+      viewer.style.opacity = '0';
+      viewer.removeAttribute('src');
+      viewer.removeAttribute('ios-src');
     }
 
-    function changeScene() {
-      viewer.src = 'alternate-model.glb';
-      viewer.iosSrc = 'alternate-model.usdz';
-    }
+    viewer.addEventListener('progress', (event) => {
+      const percent = Math.round(event.detail.totalProgress * 100);
+      progressBar.style.width = percent + '%';
+    });
+
+    viewer.addEventListener('load', () => {
+      progressBar.style.width = '100%';
+      setTimeout(() => {
+        progressBar.style.width = '0%';
+      }, 500);
+    });
 
     viewer.addEventListener('ar-status', (event) => {
-      if (event.detail.status === 'not-presenting') {
-        alert('Welcome back from AR. You can select another scene.');
+      if (event.detail.status === 'failed') {
+        alert('AR is only available on supported mobile devices.');
       }
+    });
+
+    viewer.addEventListener('error', (e) => {
+      console.error("Model Viewer Error:", e);
+      alert("Failed to load model. Check file path and server settings.");
     });
   </script>
 
