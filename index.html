@@ -31,16 +31,27 @@
     }
 
     .close-button {
-      position: absolute;
+      position: fixed;
       top: 20px;
       right: 20px;
-      z-index: 11;
+      z-index: 21;
       background: rgba(255,255,255,0.8);
       border: none;
       padding: 10px 15px;
       font-size: 16px;
       cursor: pointer;
       border-radius: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .close-button {
+        top: auto;
+        bottom: 20px;
+        right: 20px;
+        padding: 14px 20px;
+        font-size: 18px;
+        background: rgba(255,255,255,0.9);
+      }
     }
 
     model-viewer {
@@ -53,6 +64,21 @@
       background-color: transparent;
       opacity: 0;
       transition: opacity 0.3s ease;
+    }
+
+    model-viewer::part(ar-button) {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 20;
+      background: #00ffcc;
+      color: black;
+      padding: 16px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
 
     @keyframes spin {
@@ -118,10 +144,6 @@
       <p style="margin-top: 20px;">Loading AR Experience...</p>
     </div>
 
-    <!-- AR Button -->
-    <button slot="ar-button" style="background: #00ffcc; color: black; padding: 12px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;">
-      Launch AR
-    </button>
   </model-viewer>
 
   <script>
