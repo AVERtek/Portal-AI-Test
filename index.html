@@ -66,21 +66,6 @@
       transition: opacity 0.3s ease;
     }
 
-    model-viewer::part(ar-button) {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 20;
-      background: #00ffcc;
-      color: black;
-      padding: 16px 24px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
-
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
@@ -143,6 +128,21 @@
       <div class="spinner"></div>
       <p style="margin-top: 20px;">Loading AR Experience...</p>
     </div>
+
+    <!-- AR Button (safe for mobile) -->
+    <button slot="ar-button" style="
+      margin: 20px;
+      padding: 16px 24px;
+      font-size: 18px;
+      background: #00ffcc;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 20;
+    ">
+      Launch AR
+    </button>
 
   </model-viewer>
 
