@@ -79,6 +79,22 @@
       cursor: pointer;
     }
 
+    .ar-launch-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 20;
+  padding: 24px 36px;
+  font-size: 32px;
+  background-color: #00cc66;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  cursor: pointer;
+  display: block;
+    }    
+    
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
@@ -143,8 +159,7 @@
     </div>
 
     <!-- AR Button -->
-    <button slot="ar-button">Launch AR</button>
-  </model-viewer>
+<button slot="ar-button" class="ar-launch-button">Launch AR</button>
 
   <script>
     const viewer = document.getElementById('arViewer');
