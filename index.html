@@ -33,7 +33,7 @@
       border-radius: 6px;
     }
 
-    /* Close AR Button: Visible and Styled */
+    /* Close AR Button */
     .close-button {
       position: fixed;
       top: 20px;
@@ -49,7 +49,22 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
 
-    /* Model Viewer */
+    /* AR Launch Button: Lower Right */
+    .ar-launch-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 30;
+      padding: 24px 36px;
+      font-size: 32px;
+      background-color: #00cc66;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      cursor: pointer;
+    }
+
     model-viewer {
       position: fixed;
       top: 0;
@@ -62,39 +77,6 @@
       transition: opacity 0.3s ease;
     }
 
-    /* AR Button: Lower Right, 2X Size, Green */
-    model-viewer::part(ar-button),
-    button[slot="ar-button"] {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 20;
-      padding: 24px 36px;
-      font-size: 32px;
-      background-color: #00cc66;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      cursor: pointer;
-    }
-
-    .ar-launch-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 20;
-  padding: 24px 36px;
-  font-size: 32px;
-  background-color: #00cc66;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  cursor: pointer;
-  display: block;
-    }    
-    
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
@@ -135,6 +117,9 @@
   <!-- Close AR Button -->
   <button class="close-button" onclick="closeAR()">✖ Close AR</button>
 
+  <!-- AR Launch Button -->
+  <button class="ar-launch-button" onclick="activateAR()">🚀 Launch AR</button>
+
   <!-- Progress Bar -->
   <div id="progress-bar"></div>
 
@@ -157,9 +142,7 @@
       <div class="spinner"></div>
       <p style="margin-top: 20px;">Loading AR Experience...</p>
     </div>
-
-    <!-- AR Button -->
-<button slot="ar-button" class="ar-launch-button">Launch AR</button>
+  </model-viewer>
 
   <script>
     const viewer = document.getElementById('arViewer');
@@ -175,6 +158,14 @@
       viewer.style.opacity = '0';
       viewer.removeAttribute('src');
       viewer.removeAttribute('ios-src');
+    }
+
+    function activateAR() {
+      if (viewer.canActivateAR) {
+        viewer.activateAR();
+      } else {
+        alert("AR is not supported on this device.");
+      }
     }
 
     viewer.addEventListener('progress', (event) => {
