@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AR Apartment Experience</title>
+  <title>Portal AI Test</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
@@ -107,11 +107,11 @@
 
   <!-- Scene Buttons -->
   <div class="ui-overlay">
-    <div class="scene-button" onclick="launchAR('Models/crystal_ball.glb', 'Models/lifestyle.usdz')">🏡 Lifestyle</div>
-    <div class="scene-button" onclick="launchAR('Models/wooden_door_-_low_poly_animated.glb', 'Models/amenities.usdz')">💪 Amenities</div>
-    <div class="scene-button" onclick="launchAR('Models/zefiro.glb', 'Models/neighborhood.usdz')">🗺️ Neighborhood</div>
-    <div class="scene-button" onclick="launchAR('Models/PORTAL_MOUNTAIN_VILLAGE.glb', 'Models/seasonal.usdz')">🍂 Seasonal</div>
-    <div class="scene-button" onclick="launchAR('https://modelviewer.dev/shared-assets/models/Astronaut.glb', 'https://modelviewer.dev/shared-assets/models/Astronaut.usdz')">🧑‍🚀 Astronaut</div>
+    <!--<div class="scene-button" onclick="launchAR('Models/crystal_ball.glb', 'Models/lifestyle.usdz')">🏡 Lifestyle</div> -->
+    <!--<div class="scene-button" onclick="launchAR('Models/wooden_door_-_low_poly_animated.glb', 'Models/amenities.usdz')">💪 Amenities</div> -->
+    <!--<div class="scene-button" onclick="launchAR('Models/zefiro.glb', 'Models/neighborhood.usdz')">🗺️ Neighborhood</div> -->
+    <div class="scene-button" onclick="launchAR('Models/PORTAL_MOUNTAIN_VILLAGE.glb', 'Models/portal_mountain_village.usdz')">🍂 Portal</div>
+    <!--<div class="scene-button" onclick="launchAR('https://modelviewer.dev/shared-assets/models/Astronaut.glb', 'https://modelviewer.dev/shared-assets/models/Astronaut.usdz')">🧑‍🚀 Astronaut</div> -->
   </div>
 
   <!-- Close AR Button -->
@@ -164,7 +164,7 @@
       if (viewer.canActivateAR) {
         viewer.activateAR();
       } else {
-        alert("AR is not supported on this device.");
+        alert("AR requires mobile device, it is not supported on this device.");
       }
     }
 
