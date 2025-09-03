@@ -8,7 +8,7 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: url('images/WebPortal Skybox1024.jpg') no-repeat center center fixed;
+      <!--background: url('images/WebPortal Skybox1024.jpg') no-repeat center center fixed; -->
       background-size: cover;
     }
 
@@ -101,7 +101,17 @@
       z-index: 15;
       transition: width 0.3s ease;
     }
-  </style>
+
+    #bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+</style>
 </head>
 <body>
 
@@ -144,6 +154,12 @@
     </div>
   </model-viewer>
 
+ <!-- Background Video -->
+  <video autoplay muted loop playsinline id="bg-video">
+  <source src="videos/V7_best_8598739-uhd_3840_2160_30fps.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+  </video>
+  
   <script>
     const viewer = document.getElementById('arViewer');
     const progressBar = document.getElementById('progress-bar');
