@@ -8,7 +8,7 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      <!--background: url('images/WebPortal Skybox1024.jpg') no-repeat center center fixed; -->
+      /* background: url('images/WebPortal Skybox1024.jpg') no-repeat center center fixed; */
       background-size: cover;
     }
 
@@ -103,25 +103,27 @@
     }
 
     #bg-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  min-width: 100vw;
-  min-height: 100vh;
-  object-fit: cover;
-  z-index: -1;
-}
-</style>
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100vw;
+      min-height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      transition: opacity 1s ease;
+    }
+
+    #bg-video.fade-out {
+      opacity: 0;
+    }
+  </style>
 </head>
 <body>
 
   <!-- Scene Buttons -->
   <div class="ui-overlay">
     <div class="scene-button" onclick="launchAR('Models/the_charles_floorplan_final_v12.glb?sound=Sound/Charles_FP_Audio.mp3', 'Models/THE_CHARLES_FLOORPLAN_FINAL_v12C.usdz')">🏡 Floorplan</div>
-    <!--<div class="scene-button" onclick="launchAR('Models/wooden_door_-_low_poly_animated.glb', 'Models/amenities.usdz')">💪 Amenities</div> -->
-    <!--<div class="scene-button" onclick="launchAR('Models/zefiro.glb', 'Models/neighborhood.usdz')">🗺️ Neighborhood</div> -->
     <div class="scene-button" onclick="launchAR('Models/PORTAL_MOUNTAIN_VILLAGE.glb', 'Models/portal_mountain_village.usdz')">🧿Portal</div>
-    <!--<div class="scene-button" onclick="launchAR('https://modelviewer.dev/shared-assets/models/Astronaut.glb', 'https://modelviewer.dev/shared-assets/models/Astronaut.usdz')">🧑‍🚀 Astronaut</div> -->
   </div>
 
   <!-- Close AR Button -->
@@ -154,29 +156,35 @@
     </div>
   </model-viewer>
 
- <!-- Background Video -->
+  <!-- Background Video -->
   <video autoplay muted loop playsinline id="bg-video">
-  <source src="video/V7_best_8598739-uhd_3840_2160_30fps.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
+    <source src="video/V7_best_8598739-uhd_3840_2160_30fps.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
   </video>
-  
+
   <script>
     const viewer = document.getElementById('arViewer');
     const progressBar = document.getElementById('progress-bar');
+    const bgVideo = document.getElementById('bg-video');
+    let arWasActivated = false;
 
     function launchAR(glbPath, usdzPath) {
       viewer.setAttribute('src', glbPath);
       viewer.setAttribute('ios-src', usdzPath);
       viewer.style.opacity = '1';
+      if (bgVideo) bgVideo.classList.add('fade-out');
     }
 
     function closeAR() {
       viewer.style.opacity = '0';
       viewer.removeAttribute('src');
       viewer.removeAttribute('ios-src');
+      if (bgVideo) bgVideo.classList.remove('fade-out');
+      arWasActivated = false;
     }
 
     function activateAR() {
+      arWasActivated = true;
       if (viewer.canActivateAR) {
         viewer.activateAR();
       } else {
@@ -197,7 +205,7 @@
     });
 
     viewer.addEventListener('ar-status', (event) => {
-      if (event.detail.status === 'failed') {
+      if (event.detail.status === 'failed' && arWasActivated) {
         alert('AR is only available on supported mobile devices.');
       }
     });
