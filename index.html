@@ -64,6 +64,22 @@
       cursor: pointer;
     }
 
+    .icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 12px;
+  vertical-align: middle;
+}
+
+/* Prevent oversized icon inside AR button */
+.ar-launch-button img.icon {
+  width: 48px;
+  height: 48px;
+  margin-right: 12px;
+  vertical-align: middle;
+  object-fit: contain;
+}
+    
     model-viewer {
       position: fixed;
       top: 0;
@@ -161,7 +177,7 @@
   <button class="close-button" onclick="closeAR()">✖ Close AR</button>
 
   <!-- AR Launch Button -->
-  <button class="ar-launch-button" onclick="activateAR()"><img src="icons/AR Icon 1.png" alt="AR Button" class="icon" /> Experience 4D/AR</button>
+  <button class="ar-launch-button" onclick="activateAR()"><img src="icons/AR Icon 1.png" alt="AR Button" class="icon" /> 4D/AR Transport Yourself</button>
   <!--<button class="ar-launch-button" onclick="activateAR()">🚀 Discover AR</button> -->
 
   <!-- Progress Bar -->
