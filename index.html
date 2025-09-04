@@ -11,7 +11,6 @@
       background-size: cover;
     }
 
-    /* Scene Buttons: Lower Left */
     .ui-overlay {
       position: fixed;
       bottom: 20px;
@@ -32,7 +31,6 @@
       border-radius: 12px;
     }
 
-    /* Close AR Button */
     .close-button {
       position: fixed;
       top: 20px;
@@ -48,7 +46,6 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
 
-    /* AR Launch Button: Lower Right */
     .ar-launch-button {
       position: fixed;
       bottom: 20px;
@@ -62,24 +59,27 @@
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       cursor: pointer;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .ar-launch-button:not(.hidden) {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hidden {
+      display: none !important;
     }
 
     .icon {
-  width: 40px;
-  height: 40px;
-  margin-right: 12px;
-  vertical-align: middle;
-}
+      width: 40px;
+      height: 40px;
+      margin-right: 12px;
+      vertical-align: middle;
+    }
 
-/* Prevent oversized icon inside AR button */
-.ar-launch-button img.icon {
-  width: 48px;
-  height: 48px;
-  margin-right: 12px;
-  vertical-align: middle;
-  object-fit: contain;
-}
-    
     model-viewer {
       position: fixed;
       top: 0;
@@ -153,12 +153,6 @@
       opacity: 0;
       pointer-events: none;
     }
-    .scene-button .icon {
-  width: 40px;
-  height: 40px;
-  margin-right: 12px;
-  vertical-align: middle;
-}
   </style>
 </head>
 <body>
@@ -166,19 +160,20 @@
   <!-- Scene Buttons -->
   <div class="ui-overlay">
     <div class="scene-button" onclick="launchAR('Models/the_charles_floorplan_final_v12.glb', 'Models/THE_CHARLES_FLOORPLAN_FINAL_v12C.usdz')">
-  <img src="icons/Floorplan icon 3.jpg" alt="Floorplan" class="icon" /> Floorplan </div>
-    <!--<div class="scene-button" onclick="launchAR('Models/the_charles_floorplan_final_v12.glb?sound=Sound/Charles_FP_Audio.mp3', 'Models/THE_CHARLES_FLOORPLAN_FINAL_v12C.usdz')">🏡 Floorplan</div> -->
-   <div class="scene-button" onclick="launchAR('Models/AR-Building Portal.glb', 'Models/AR-BUILDING PORTAL.usdz')">
-  <img src="icons/Portal 2.png" alt="Portal" class="icon" /> Portal </div> 
-    <!--<div class="scene-button" onclick="launchAR('Models/AR-Building Portal.glb', 'Models/AR-BUILDING PORTAL.usdz')">🧿Portal</div> -->
+      <img src="icons/Floorplan icon 3.jpg" alt="Floorplan" class="icon" /> Floorplan
+    </div>
+    <div class="scene-button" onclick="launchAR('Models/AR-Building Portal.glb', 'Models/AR-BUILDING PORTAL.usdz')">
+      <img src="icons/Portal 2.png" alt="Portal" class="icon" /> Portal
+    </div>
   </div>
 
   <!-- Close AR Button -->
   <button class="close-button" onclick="closeAR()">✖ Close AR</button>
 
-  <!-- AR Launch Button -->
-  <button class="ar-launch-button" onclick="activateAR()"><img src="icons/AR Icon 1.png" alt="AR Button" class="icon" /> 4D/AR Transport Yourself</button>
-  <!--<button class="ar-launch-button" onclick="activateAR()">🚀 Discover AR</button> -->
+  <!-- AR Launch Button (initially hidden) -->
+  <button class="ar-launch-button hidden" onclick="activateAR()">
+    <img src="icons/AR Icon 1.png" alt="AR Button" class="icon" /> Experience 4D/AR
+  </button>
 
   <!-- Progress Bar -->
   <div id="progress-bar"></div>
@@ -189,7 +184,7 @@
     ar
     ar-modes="webxr scene-viewer quick-look"
     camera-controls
-    autoplay animation-name=""
+    autoplay
     interaction-prompt="none"
     reveal="auto"
     loading="eager"
@@ -197,8 +192,6 @@
     exposure="1"
     environment-image="neutral"
     poster="images/WebPortal Skybox1024.jpg">
-
-    <!-- Spinner -->
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: white; font-size: 24px;">
       <div class="spinner"></div>
       <p style="margin-top: 20px;">Loading AR Experience...</p>
@@ -227,9 +220,9 @@
     const bgVideo = document.getElementById('bg-video');
     const introTitle = document.getElementById('intro-title');
     const transitionTitle = document.getElementById('transition-title');
+    const arLaunchButton = document.querySelector('.ar-launch-button');
     let arWasActivated = false;
 
-    // Show intro title on load, hide after 5 seconds
     window.addEventListener('load', () => {
       introTitle.classList.remove('hidden');
       setTimeout(() => {
@@ -237,7 +230,6 @@
       }, 5000);
     });
 
-    // Launch AR with transition overlay
     function launchAR(glbPath, usdzPath) {
       transitionTitle.classList.remove('hidden');
 
@@ -247,7 +239,10 @@
         viewer.setAttribute('ios-src', usdzPath);
         viewer.style.opacity = '1';
         if (bgVideo) bgVideo.classList.add('fade-out');
-      }, 5000); // Duration of transition overlay
+
+        // Reveal AR Launch Button
+        arLaunchButton.classList.remove('hidden');
+      }, 5000);
     }
 
     function closeAR() {
@@ -256,6 +251,9 @@
       viewer.removeAttribute('ios-src');
       if (bgVideo) bgVideo.classList.remove('fade-out');
       arWasActivated = false;
+
+      // Hide AR Launch Button again
+      arLaunchButton.classList.add('hidden');
     }
 
     function activateAR() {
@@ -274,21 +272,8 @@
 
     viewer.addEventListener('load', () => {
       progressBar.style.width = '100%';
-      setTimeout(() => {
-        progressBar.style.width = '0%';
-      }, 500);
-    });
-
-    viewer.addEventListener('ar-status', (event) => {
-      if (event.detail.status === 'failed' && arWasActivated) {
-        alert('AR is only available on supported mobile devices.');
-      }
-    });
-
-    viewer.addEventListener('error', (e) => {
-      console.error("Model Viewer Error:", e);
-      alert("Failed to load model. Check file path and server settings.");
-    });
+      setTimeout
+          });
   </script>
 
 </body>
