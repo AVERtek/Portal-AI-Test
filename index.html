@@ -151,7 +151,7 @@
   <button class="close-button" onclick="closeAR()">✖ Close AR</button>
 
   <!-- AR Launch Button -->
-  <button class="ar-launch-button" onclick="activateAR()">🚀 Launch AR</button>
+  <button class="ar-launch-button" onclick="activateAR()">🚀 Discover AR</button>
 
   <!-- Progress Bar -->
   <div id="progress-bar"></div>
@@ -186,12 +186,12 @@
 
   <!-- Intro Title Overlay -->
   <div id="intro-title" class="title-overlay">
-    <h1>Welcome to The Charles</h1>
+    <h1>Designing & Building The Future!</h1>
   </div>
 
   <!-- Transition Title Overlay -->
   <div id="transition-title" class="title-overlay hidden">
-    <h2>Loading Scene...</h2>
+    <h2>Experience The Future Of Home Living...</h2>
   </div>
 
   <script>
@@ -220,7 +220,7 @@
         viewer.setAttribute('ios-src', usdzPath);
         viewer.style.opacity = '1';
         if (bgVideo) bgVideo.classList.add('fade-out');
-      }, 3000); // Duration of transition overlay
+      }, 5000); // Duration of transition overlay
     }
 
     function closeAR() {
