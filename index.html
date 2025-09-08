@@ -10,16 +10,16 @@
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background-color: black;
-      overflow: auto; /* Enables vertical and horizontal scrolling */
+      overflow: auto;
     }
 
     #bg-video {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
-      min-width: 100vw;
-      min-height: 100vh;
-      object-fit: cover;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
       z-index: -1;
       transition: opacity 1s ease;
     }
@@ -55,10 +55,10 @@
     }
 
     .ar-launch-button {
-      position: absolute;
-      top: 50%;
+      position: fixed;
+      top: 100px;
       left: 50%;
-      transform: translate(-50%, -150%);
+      transform: translateX(-50%);
       z-index: 30;
       padding: 20px 30px;
       font-size: 24px;
@@ -69,12 +69,11 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       cursor: pointer;
       opacity: 0;
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transition: opacity 0.6s ease;
     }
 
     .ar-launch-button:not(.hidden) {
       opacity: 1;
-      transform: translate(-50%, -150%);
     }
 
     .close-button {
@@ -118,6 +117,28 @@
       transition: width 0.3s ease;
     }
 
+    .title-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      z-index: 50;
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
+
+    .title-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
     @media (max-width: 768px) {
       .scene-button {
         font-size: 16px;
@@ -128,11 +149,18 @@
       .ar-launch-button {
         font-size: 18px;
         padding: 16px 24px;
+        top: 80px;
       }
 
       .close-button {
         font-size: 14px;
         padding: 8px 12px;
+      }
+
+      .title-overlay {
+        font-size: 28px;
+        padding: 0 16px;
+        text-align: center;
       }
     }
 
@@ -145,6 +173,11 @@
       .ar-launch-button {
         font-size: 16px;
         padding: 14px 20px;
+        top: 60px;
+      }
+
+      .title-overlay {
+        font-size: 22px;
       }
     }
   </style>
@@ -156,8 +189,18 @@
     <source src="video/V7_best_8598739-uhd_3840_2160_30fps.mp4" type="video/mp4" />
   </video>
 
+  <!-- Intro Title Overlay -->
+  <div id="intro-title" class="title-overlay">
+    <h1>The Future in Apartment Home Living!</h1>
+  </div>
+
+  <!-- Transition Title Overlay -->
+  <div id="transition-title" class="title-overlay hidden">
+    <h2>Experience What's Coming...</h2>
+  </div>
+
   <!-- Scene Buttons -->
-  <div class="ui-overlay">
+  <div class="ui-overlay" id="sceneButtons">
     <div class="scene-button" onclick="launchAR('Models/AR-Building Portal.glb', 'Models/AR-BUILDING PORTAL.usdz')">
       4D/AR Portal: Completed Construction
     </div>
@@ -198,42 +241,79 @@
   </model-viewer>
 
   <script>
-    const viewer = document.getElementById('arViewer');
-    const arButton = document.querySelector('.ar-launch-button');
-    const closeButton = document.querySelector('.close-button');
-    const progressBar = document.getElementById('progress-bar');
-    const bgVideo = document.getElementById('bg-video');
+  const viewer = document.getElementById('arViewer');
+  const arButton = document.querySelector('.ar-launch-button');
+  const closeButton = document.querySelector('.close-button');
+  const progressBar = document.getElementById('progress-bar');
+  const bgVideo = document.getElementById('bg-video');
+  const introTitle = document.getElementById('intro-title');
+  const transitionTitle = document.getElementById('transition-title');
+  const sceneButtons = document.getElementById('sceneButtons');
 
-    function launchAR(glbPath, usdzPath) {
+  // Show intro title on page load
+  window.addEventListener('load', () => {
+    introTitle.classList.remove('hidden');
+    setTimeout(() => {
+      introTitle.classList.add('hidden');
+    }, 5000);
+  });
+
+  // Launch AR scene
+  function launchAR(glbPath, usdzPath) {
+    transitionTitle.classList.remove('hidden');
+    sceneButtons.classList.add('hidden');
+
+    setTimeout(() => {
+      transitionTitle.classList.add('hidden');
       viewer.setAttribute('src', glbPath);
       viewer.setAttribute('ios-src', usdzPath);
       viewer.style.display = 'block';
       viewer.style.opacity = '1';
       arButton.classList.remove('hidden');
       closeButton.classList.remove('hidden');
-      bgVideo.classList.add('fade-out'); // Hide background video
-    }
+      bgVideo.classList.add('fade-out');
+    }, 3000);
+  }
 
-    function activateAR() {
+  // Activate AR mode
+  function activateAR() {
+    if (viewer.canActivateAR) {
       viewer.activateAR();
+    } else {
+      alert("AR is only supported on compatible mobile devices.");
     }
+  }
 
-    function closeAR() {
-      viewer.style.opacity = '0';
-      setTimeout(() => {
-        viewer.style.display = 'none';
-        viewer.removeAttribute('src');
-        viewer.removeAttribute('ios-src');
-      }, 300);
-      arButton.classList.add('hidden');
-      closeButton.classList.add('hidden');
-      bgVideo.classList.remove('fade-out'); // Restore background video
-    }
+  // Close AR scene
+  function closeAR() {
+    viewer.style.opacity = '0';
+    setTimeout(() => {
+      viewer.style.display = 'none';
+      viewer.removeAttribute('src');
+      viewer.removeAttribute('ios-src');
+    }, 300);
+    arButton.classList.add('hidden');
+    closeButton.classList.add('hidden');
+    sceneButtons.classList.remove('hidden');
+    bgVideo.classList.remove('fade-out');
+  }
 
-    viewer.addEventListener('progress', (event) => {
-      const percent = Math.round(event.detail.totalProgress * 100);
-      progressBar.style.width = percent + '%';
-    });
-  </script>
+  // Update progress bar during model load
+  viewer.addEventListener('progress', (event) => {
+    const percent = Math.round(event.detail.totalProgress * 100);
+    progressBar.style.width = percent + '%';
+  });
+
+  viewer.addEventListener('load', () => {
+    setTimeout(() => {
+      progressBar.style.width = '0%';
+    }, 500);
+  });
+
+  viewer.addEventListener('error', (e) => {
+    console.error("Model Viewer Error:", e);
+    alert("Failed to load AR model. Please check file paths and compatibility.");
+  });
+</script>
 </body>
 </html>
