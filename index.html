@@ -7,22 +7,23 @@
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: black;
-      overflow: auto;
-    }
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: black;
+  overflow: scroll; /* Enables both vertical and horizontal scrolling */
+  -webkit-overflow-scrolling: touch;
+}
 
-    #bg-video {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      z-index: -1;
-      transition: opacity 1s ease;
-    }
+   #bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px; /* or your video’s native width */
+  height: 1080px; /* or your video’s native height */
+  object-fit: contain;
+  z-index: -1;
+  transition: opacity 1s ease;
+}
 
     #bg-video.fade-out {
       opacity: 0;
