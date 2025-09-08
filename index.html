@@ -30,18 +30,28 @@
       pointer-events: none;
     }
 
-    .ui-overlay {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-    }
+  #scroll-container {
+  position: relative;
+  width: 1920px; /* match your video width */
+  height: 1080px; /* match your video height */
+}
 
+.ui-overlay {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+    body {
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+    
     .scene-button {
       background: rgba(77,77,255,1);
       border: 1px solid white;
@@ -186,10 +196,15 @@
 <body>
 
   <!-- Background Construction Video -->
+  <div id="scroll-container">
   <video id="bg-video" autoplay muted loop playsinline>
     <source src="video/V7_best_8598739-uhd_3840_2160_30fps.mp4" type="video/mp4" />
   </video>
 
+  <div class="ui-overlay" id="sceneButtons">
+    <!-- your scene buttons here -->
+  </div>
+</div>
   <!-- Intro Title Overlay -->
   <div id="intro-title" class="title-overlay">
     <h1>The Future in Apartment Home Living!</h1>
