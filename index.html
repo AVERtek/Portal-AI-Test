@@ -10,19 +10,23 @@
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background-color: black;
-      overflow-y: auto;
+      overflow: auto; /* Enables vertical and horizontal scrolling */
     }
 
     #bg-video {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: auto;
+      min-width: 100vw;
       min-height: 100vh;
       object-fit: cover;
       z-index: -1;
       transition: opacity 1s ease;
+    }
+
+    #bg-video.fade-out {
+      opacity: 0;
+      pointer-events: none;
     }
 
     .ui-overlay {
@@ -51,10 +55,10 @@
     }
 
     .ar-launch-button {
-      position: fixed;
-      bottom: 120px;
+      position: absolute;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, -150%);
       z-index: 30;
       padding: 20px 30px;
       font-size: 24px;
@@ -70,7 +74,7 @@
 
     .ar-launch-button:not(.hidden) {
       opacity: 1;
-      transform: translateY(0);
+      transform: translate(-50%, -150%);
     }
 
     .close-button {
@@ -147,10 +151,12 @@
 </head>
 <body>
 
+  <!-- Background Construction Video -->
   <video id="bg-video" autoplay muted loop playsinline>
-    <source src="video/Bailey_Final_1.mp4" type="video/mp4" />
+    <source src="video/Construction_Site_Background.mp4" type="video/mp4" />
   </video>
 
+  <!-- Scene Buttons -->
   <div class="ui-overlay">
     <div class="scene-button" onclick="launchAR('Models/AR-Building Portal.glb', 'Models/AR-BUILDING PORTAL.usdz')">
       4D/AR Portal: Completed Construction
@@ -166,10 +172,16 @@
     </div>
   </div>
 
+  <!-- AR Launch Button -->
   <button class="ar-launch-button hidden" onclick="activateAR()">Experience 4D/AR</button>
+
+  <!-- Close Button -->
   <button class="close-button hidden" onclick="closeAR()">✖ Close UX</button>
+
+  <!-- Progress Bar -->
   <div id="progress-bar"></div>
 
+  <!-- Model Viewer -->
   <model-viewer id="arViewer"
     alt="AR Experience"
     ar
@@ -199,7 +211,7 @@
       viewer.style.opacity = '1';
       arButton.classList.remove('hidden');
       closeButton.classList.remove('hidden');
-      bgVideo.classList.add('fade-out');
+      bgVideo.classList.add('fade-out'); // Hide background video
     }
 
     function activateAR() {
@@ -215,7 +227,7 @@
       }, 300);
       arButton.classList.add('hidden');
       closeButton.classList.add('hidden');
-      bgVideo.classList.remove('fade-out');
+      bgVideo.classList.remove('fade-out'); // Restore background video
     }
 
     viewer.addEventListener('progress', (event) => {
