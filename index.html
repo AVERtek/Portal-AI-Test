@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal AI Test</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
@@ -153,6 +154,64 @@
       opacity: 0;
       pointer-events: none;
     }
+    /* Responsive UI Scaling */
+@media (max-width: 768px) {
+  .scene-button {
+    font-size: 18px;
+    padding: 10px 14px;
+  }
+
+  .ar-launch-button {
+    font-size: 24px;
+    padding: 18px 28px;
+  }
+
+  .close-button {
+    font-size: 16px;
+    padding: 10px 14px;
+  }
+
+  .icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+  }
+
+  .title-overlay {
+    font-size: 32px;
+    padding: 0 20px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .scene-button {
+    font-size: 16px;
+    padding: 8px 12px;
+  }
+
+  .ar-launch-button {
+    font-size: 20px;
+    padding: 16px 24px;
+  }
+
+  .close-button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .icon {
+    width: 28px;
+    height: 28px;
+    margin-right: 6px;
+  }
+
+  .title-overlay {
+    font-size: 24px;
+    padding: 0 16px;
+    text-align: center;
+  }
+}
   </style>
 </head>
 <body>
