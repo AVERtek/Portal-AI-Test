@@ -146,11 +146,10 @@
       transition: opacity 1s ease;
     }
 
-    .title-overlay.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1s ease;
-}
+    .title-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
 
     @media (max-width: 768px) {
       .scene-button {
@@ -260,11 +259,6 @@
   <script>
     const viewer = document.getElementById('arViewer');
     const arButton = document.querySelector('.ar-launch-button');
-    const closeButton =
-
-      <script>
-    const viewer = document.getElementById('arViewer');
-    const arButton = document.querySelector('.ar-launch-button');
     const closeButton = document.querySelector('.close-button');
     const progressBar = document.getElementById('progress-bar');
     const bgVideo = document.getElementById('bg-video');
@@ -274,20 +268,17 @@
     const headerContainer = document.getElementById('headerContainer');
     const arAudio = document.getElementById('arAudio');
 
- window.addEventListener('load', () => {
-  introTitle.classList.remove('hidden');
+    // Intro overlay fade-out and removal
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        introTitle.classList.add('fade-out');
+        introTitle.addEventListener('transitionend', () => {
+          introTitle.style.display = 'none';
+        }, { once: true });
+      }, 4000); // Show intro for 4 seconds
+    });
 
-  // Fade out after 4 seconds
-  setTimeout(() => {
-    introTitle.classList.add('hidden');
-
-    // Fully remove from layout after fade completes
-    introTitle.addEventListener('transitionend', () => {
-      introTitle.style.display = 'none';
-    }, { once: true });
-  }, 4000);
-});
-    
+    // Launch AR scene with audio
     function launchAR(glbPath, usdzPath, audioPath) {
       transitionTitle.classList.remove('hidden');
       sceneButtons.classList.add('hidden');
@@ -312,6 +303,7 @@
       }, 3000);
     }
 
+    // Activate AR mode
     function activateAR() {
       if (viewer.canActivateAR) {
         viewer.activateAR();
@@ -320,6 +312,7 @@
       }
     }
 
+    // Close AR scene and reset UI
     function closeAR() {
       viewer.style.opacity = '0';
       setTimeout(() => {
@@ -338,6 +331,7 @@
       arAudio.currentTime = 0;
     }
 
+    // Progress bar updates
     viewer.addEventListener('progress', (event) => {
       const percent = Math.round(event.detail.totalProgress * 100);
       progressBar.style.width = percent + '%';
