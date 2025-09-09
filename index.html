@@ -288,23 +288,20 @@
 
   // Launch AR scene
   function launchAR(glbPath, usdzPath) {
-    transitionTitle.classList.remove('hidden');
-    sceneButtons.classList.add('hidden');
+  transitionTitle.classList.remove('hidden');
+  sceneButtons.classList.add('hidden'); // ✅ Hides scene buttons
 
-    sceneButtons.classList.add('hidden');
+  setTimeout(() => {
+    transitionTitle.classList.add('hidden');
+    viewer.setAttribute('src', glbPath);
+    viewer.setAttribute('ios-src', usdzPath);
+    viewer.style.display = 'block';
+    viewer.style.opacity = '1';
     arButton.classList.remove('hidden');
-    
-    setTimeout(() => {
-      transitionTitle.classList.add('hidden');
-      viewer.setAttribute('src', glbPath);
-      viewer.setAttribute('ios-src', usdzPath);
-      viewer.style.display = 'block';
-      viewer.style.opacity = '1';
-      arButton.classList.remove('hidden');
-      closeButton.classList.remove('hidden');
-      bgVideo.classList.add('fade-out');
-    }, 3000);
-  }
+    closeButton.classList.remove('hidden');
+    bgVideo.classList.add('fade-out');
+  }, 3000);
+}
 
   // Activate AR mode
   function activateAR() {
@@ -316,7 +313,7 @@
   }
 
   // Close AR scene
-  function closeAR() {
+ function closeAR() {
   viewer.style.opacity = '0';
   setTimeout(() => {
     viewer.style.display = 'none';
@@ -325,7 +322,7 @@
   }, 300);
   arButton.classList.add('hidden');
   closeButton.classList.add('hidden');
-  sceneButtons.classList.remove('hidden');
+  sceneButtons.classList.remove('hidden'); // ✅ Restores scene buttons
   bgVideo.classList.remove('fade-out');
 }
 
