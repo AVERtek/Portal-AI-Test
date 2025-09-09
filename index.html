@@ -223,7 +223,7 @@
     <div class="scene-button" onclick="window.open('video/Bailey_Final_1.mp4', '_blank')">
       <img src="icons/Dog icon 2.png" alt="Bailey" class="icon" /> Spokesmodel: Meet Bailey
     </div>
-    <div class="scene-button" onclick="launchAR('Models/the_charles_floorplan_final_v12.glb', 'Models/THE_CHARLES_FLOORPLAN_FINAL_v12C.usdz')">
+    <div class="scene-button" onclick="launchAR('Models/the_charles_floorplan_final_v12.glb?sound=Sound/Charles_FP_Audio.mp3', 'Models/THE_CHARLES_FLOORPLAN_FINAL_v12C.usdz')">
       <img src="icons/Floorplan icon 3.jpg" alt="Floorplan" class="icon" /> 4D/AR: Walk-Through Floorplan
     </div>
   </div>
@@ -325,6 +325,26 @@
       console.error("Model Viewer Error:", e);
       alert("Failed to load AR model. Please check file paths and compatibility.");
     });
+
+     <section class="attribution">
+        <div>
+          <span>
+            <h1 style="text-align: center;" markdown="1"><b style="color:#FFFFFF;"><p style="font-family:Factoria Bold">Play Bar</b>
+              <p align="center">
+              <span>
+              <audio controls autoplay loop id="sound">
+                <source src="Sound/Charles_FP_Audio.mp3"/>
+              </audio
+            ></span> 
+             </p>
+            </span>
+         </div>
+   </section>
+   <script>    
+        window.addEventListener("load", () => {
+          Sync("#model-viewer", "#sound");
+        });
+    
   </script>
 </body>
 </html>
