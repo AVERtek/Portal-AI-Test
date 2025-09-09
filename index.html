@@ -146,11 +146,11 @@
       transition: opacity 1s ease;
     }
 
- .title-overlay.hidden {
-  opacity: 0;
-  pointer-events: none; /* ✅ allows clicks to pass through */
-}
-    
+    .title-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
     @media (max-width: 768px) {
       .scene-button {
         font-size: 16px;
@@ -255,15 +255,12 @@
     const transitionTitle = document.getElementById('transition-title');
     const sceneButtons = document.getElementById('sceneButtons');
 
-   window.addEventListener('load', () => {
-  introTitle.classList.remove('hidden');
-  setTimeout(() => {
-    introTitle.classList.add('hidden');
-    setTimeout(() => {
-      introTitle.style.display = 'none'; // ✅ fully removes from layout
-    }, 1000); // matches fade duration
-  }, 5000);
-});
+    window.addEventListener('load', () => {
+      introTitle.classList.remove('hidden');
+      setTimeout(() => {
+        introTitle.classList.add('hidden');
+      }, 5000);
+    });
 
     function launchAR(glbPath, usdzPath) {
       transitionTitle.classList.remove('hidden');
@@ -271,8 +268,8 @@
 
       setTimeout(() => {
         transitionTitle.classList.add('hidden');
-        viewer.setAttribute('src
-        viewer.setAttribute('src', glbPath);
+        viewer.set
+                viewer.setAttribute('src', glbPath);
         viewer.setAttribute('ios-src', usdzPath);
         viewer.style.display = 'block';
         viewer.style.opacity = '1';
