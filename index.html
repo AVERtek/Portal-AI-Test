@@ -147,9 +147,10 @@
     }
 
     .title-overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
 
     @media (max-width: 768px) {
       .scene-button {
@@ -273,12 +274,15 @@
     const headerContainer = document.getElementById('headerContainer');
     const arAudio = document.getElementById('arAudio');
 
-    window.addEventListener('load', () => {
-      introTitle.classList.remove('hidden');
-      setTimeout(() => {
-        introTitle.classList.add('hidden');
-      }, 4000);
-    });
+   window.addEventListener('load', () => {
+  introTitle.classList.remove('hidden');
+  setTimeout(() => {
+    introTitle.classList.add('hidden');
+    setTimeout(() => {
+      introTitle.style.display = 'none'; // ✅ fully removes it from layout
+    }, 1000); // matches fade duration
+  }, 4000); // initial display time
+});
 
     function launchAR(glbPath, usdzPath, audioPath) {
       transitionTitle.classList.remove('hidden');
