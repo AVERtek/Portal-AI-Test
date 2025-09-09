@@ -255,12 +255,15 @@
     const transitionTitle = document.getElementById('transition-title');
     const sceneButtons = document.getElementById('sceneButtons');
 
-    window.addEventListener('load', () => {
-      introTitle.classList.remove('hidden');
-      setTimeout(() => {
-        introTitle.classList.add('hidden');
-      }, 5000);
-    });
+   window.addEventListener('load', () => {
+  introTitle.classList.remove('hidden');
+  setTimeout(() => {
+    introTitle.classList.add('hidden');
+    setTimeout(() => {
+      introTitle.style.display = 'none'; // ✅ fully removes from layout
+    }, 1000); // matches fade duration
+  }, 5000);
+});
 
     function launchAR(glbPath, usdzPath) {
       transitionTitle.classList.remove('hidden');
