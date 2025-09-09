@@ -205,16 +205,16 @@
   </div>
 
   <!-- Logo Title Header -->
- <div id="headerContainer" class="container">
-  <div class="card">
-    <img class="marginauto" src="images/P11 Logo_w_trans.png" alt="Logo" style="max-width: 350px; display: block; margin: 0 auto;" />
-    <h1 style="text-align: center;"><b style="color:white;"><p style="font-family:Segoe UI">NOW PRE-LEASING!</p></b></h1>
+  <div id="headerContainer" class="container">
+    <div class="card">
+      <img class="marginauto" src="images/P11 Logo_w_trans.png" alt="Logo" style="max-width: 350px; display: block; margin: 0 auto;" />
+      <h1 style="text-align: center;"><b style="color:white;"><p style="font-family:Segoe UI">NOW PRE-LEASING!</p></b></h1>
+    </div>
   </div>
-</div>
-    
+
   <!-- Scene Buttons -->
   <div class="ui-overlay" id="sceneButtons">
-    <div class="scene-button" onclick="launchAR('Models/AR-Building Portal.glb', 'Models/AR-BUILDING PORTAL.usdz')">
+    <div class="scene-button" onclick="launchAR('Models/AR-Building Portal.glb', 'Models/AR-BUILDING PORTAL.usdz', 'Sound/Building_Audio.mp3')">
       <img src="icons/Portal 2.png" alt="Portal" class="icon" /> 4D/AR Portal: Completed Construction
     </div>
     <div class="scene-button" onclick="window.open('https://g.co/gemini/share/5fb8e985f91b', '_blank')">
@@ -223,7 +223,7 @@
     <div class="scene-button" onclick="window.open('video/Bailey_Final_1.mp4', '_blank')">
       <img src="icons/Dog icon 2.png" alt="Bailey" class="icon" /> Spokesmodel: Meet Bailey
     </div>
-    <div class="scene-button" onclick="launchAR('Models/the_charles_floorplan_final_v12.glb?sound=Sound/Charles_FP_Audio.mp3', 'Models/THE_CHARLES_FLOORPLAN_FINAL_v12C.usdz')">
+    <div class="scene-button" onclick="launchAR('Models/the_charles_floorplan_final_v12.glb', 'Models/THE_CHARLES_FLOORPLAN_FINAL_v12C.usdz', 'Sound/Charles_FP_Audio.mp3')">
       <img src="icons/Floorplan icon 3.jpg" alt="Floorplan" class="icon" /> 4D/AR: Walk-Through Floorplan
     </div>
   </div>
@@ -236,6 +236,9 @@
 
   <!-- Progress Bar -->
   <div id="progress-bar"></div>
+
+  <!-- Audio Element -->
+  <audio id="arAudio" preload="auto"></audio>
 
   <!-- Model Viewer -->
   <model-viewer id="arViewer"
@@ -256,12 +259,19 @@
   <script>
     const viewer = document.getElementById('arViewer');
     const arButton = document.querySelector('.ar-launch-button');
+    const closeButton =
+
+      <script>
+    const viewer = document.getElementById('arViewer');
+    const arButton = document.querySelector('.ar-launch-button');
     const closeButton = document.querySelector('.close-button');
     const progressBar = document.getElementById('progress-bar');
     const bgVideo = document.getElementById('bg-video');
     const introTitle = document.getElementById('intro-title');
     const transitionTitle = document.getElementById('transition-title');
     const sceneButtons = document.getElementById('sceneButtons');
+    const headerContainer = document.getElementById('headerContainer');
+    const arAudio = document.getElementById('arAudio');
 
     window.addEventListener('load', () => {
       introTitle.classList.remove('hidden');
@@ -270,21 +280,27 @@
       }, 4000);
     });
 
-    function launchAR(glbPath, usdzPath) {
+    function launchAR(glbPath, usdzPath, audioPath) {
       transitionTitle.classList.remove('hidden');
       sceneButtons.classList.add('hidden');
+      headerContainer.classList.add('hidden');
 
       setTimeout(() => {
         transitionTitle.classList.add('hidden');
-        viewer.set
-                viewer.setAttribute('src', glbPath);
+        viewer.setAttribute('src', glbPath);
         viewer.setAttribute('ios-src', usdzPath);
         viewer.style.display = 'block';
         viewer.style.opacity = '1';
         arButton.classList.remove('hidden');
         closeButton.classList.remove('hidden');
-        document.getElementById('headerContainer').classList.add('hidden');
         bgVideo.classList.add('fade-out');
+
+        // Play scene-specific audio
+        arAudio.src = audioPath;
+        arAudio.currentTime = 0;
+        arAudio.play().catch(err => {
+          console.warn("Audio playback blocked:", err);
+        });
       }, 3000);
     }
 
@@ -306,8 +322,12 @@
       arButton.classList.add('hidden');
       closeButton.classList.add('hidden');
       sceneButtons.classList.remove('hidden');
-      document.getElementById('headerContainer').classList.remove('hidden');
+      headerContainer.classList.remove('hidden');
       bgVideo.classList.remove('fade-out');
+
+      // Stop and reset audio
+      arAudio.pause();
+      arAudio.currentTime = 0;
     }
 
     viewer.addEventListener('progress', (event) => {
@@ -325,7 +345,6 @@
       console.error("Model Viewer Error:", e);
       alert("Failed to load AR model. Please check file paths and compatibility.");
     });
-
- </script>
+  </script>
 </body>
 </html>
