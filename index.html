@@ -274,16 +274,20 @@
     const headerContainer = document.getElementById('headerContainer');
     const arAudio = document.getElementById('arAudio');
 
-   window.addEventListener('load', () => {
+ window.addEventListener('load', () => {
   introTitle.classList.remove('hidden');
+
+  // Fade out after 4 seconds
   setTimeout(() => {
     introTitle.classList.add('hidden');
-    setTimeout(() => {
-      introTitle.style.display = 'none'; // ✅ fully removes it from layout
-    }, 1000); // matches fade duration
-  }, 4000); // initial display time
-});
 
+    // Fully remove from layout after fade completes
+    introTitle.addEventListener('transitionend', () => {
+      introTitle.style.display = 'none';
+    }, { once: true });
+  }, 4000);
+});
+    
     function launchAR(glbPath, usdzPath, audioPath) {
       transitionTitle.classList.remove('hidden');
       sceneButtons.classList.add('hidden');
