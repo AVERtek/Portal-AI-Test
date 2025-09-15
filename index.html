@@ -81,20 +81,22 @@
 }
 
 .scene-button {
-  background: rgba(77,77,255,1);
-  border: 1px solid white;
-  padding: 10px 16px;
-  font-size: 18px;
-  color: white;
-  border-radius: 12px;
-  display: block;
   width: 100%;
   min-width: 350px;
   max-width: 100%;
   text-align: center;
+  padding: 10px 16px;
   box-sizing: border-box;
+  background: rgba(250,70,22,1);
+  border: 1px solid white;
+  font-size: 18px;
+  color: white;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
-
     .icon {
       width: 28px;
       height: 28px;
@@ -248,12 +250,9 @@
     </div>
   </div>
 
- <div class="scene-button-group">
-    
-  </div>
-  
-  <!-- Scene Buttons -->
-  <div class="ui-overlay" id="sceneButtons">
+<!-- Scene Buttons -->
+<div class="ui-overlay" id="sceneButtons">
+  <div class="scene-button-group">
     <div class="scene-button" onclick="launchAR('Models/AR-Building Portal.glb', 'Models/AR-BUILDING PORTAL.usdz', 'Sound/Building_Audio.mp3')">
       <img src="icons/Portal 2.png" alt="Portal" class="icon" /> 4D/AR Portal: Completed Construction
     </div>
@@ -266,10 +265,11 @@
     <div class="scene-button" onclick="launchAR('Models/the_charles_floorplan_final_v12.glb', 'Models/THE_CHARLES_FLOORPLAN_FINAL_v12C.usdz', 'Sound/Charles_FP_Audio.mp3')">
       <img src="icons/Floorplan icon 3.jpg" alt="Floorplan" class="icon" /> 4D/AR: Walk-Through Floorplan
     </div>
-     <div class="scene-button" onclick="window.open('https://avertek.github.io/Portal-Breadcrumb/', '_blank')">
+    <div class="scene-button" onclick="window.open('https://avertek.github.io/Portal-Breadcrumb/', '_blank')">
       <img src="icons/Breadcrumb 1 icon.png" alt="Story" class="icon" /> Discover Future Living Today!
     </div>
   </div>
+</div>
 
   <!-- AR Launch Button -->
   <button class="ar-launch-button hidden" onclick="activateAR()">Experience 4D/AR</button>
