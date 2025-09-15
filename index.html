@@ -88,21 +88,20 @@
   padding: 10px 16px;
   box-sizing: border-box;
 } 
- /*.scene-button {
-      background: rgba(250,70,22,1);
-      border: 1px solid white;
-      padding: 10px 16px;
-      font-size: 18px;
-      color: white;
-      border-radius: 12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      white-space: nowrap;
-      width: 400px;
-      max-width: 80%;
-      text-align: center;
-    } */
+.scene-button {
+  background: rgba(77,77,255,1);
+  border: 1px solid white;
+  padding: 10px 16px;
+  font-size: 18px;
+  color: white;
+  border-radius: 12px;
+  display: block;
+  width: 100%;
+  min-width: 350px;
+  max-width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
 
     .icon {
       width: 28px;
@@ -257,11 +256,15 @@
     </div>
   </div>
 
-  <div class="scene-button-group">
+ <div class="scene-button-group">
+  <!-- scene buttons here -->
+</div>
+  
+  <!--<div class="scene-button-group">
     <div class="scene-button">Short Label</div>
     <div class="scene-button">Much Longer Label That Sets the Width</div>
     <div class="scene-button">Medium Label</div>
-  </div>
+  </div> -->
   
   <!-- Scene Buttons -->
   <div class="ui-overlay" id="sceneButtons">
