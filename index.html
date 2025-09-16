@@ -190,6 +190,15 @@
       pointer-events: none;
     }
 
+     .title-overlay h1 {
+  font-size: clamp(1rem, 6vw, 4rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  padding: 0 16px;
+  }
+     
    @media (max-width: 768px) {
   #bg-video {
     height: auto;
@@ -218,20 +227,11 @@
     top: 80px;
   }
 
- .title-overlay h1 {
-  font-size: clamp(1rem, 6vw, 4rem);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-  padding: 0 16px;
-  }
-     
-  /*.title-overlay {
+ .title-overlay {
     font-size: 16px;
     padding: 0 16px;
     text-align: center;
-  }*/
+  }
 }
   </style>
 </head>
