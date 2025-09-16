@@ -219,15 +219,17 @@
   }
 
   .title-overlay h1 {
-    font-size: clamp(1.5rem, 5vw, 3.5rem);
-    font-weight: 600;
-    text-align: center;
-    margin: 0;
-    padding: 0 16px;
-    line-height: 1.2;
-    white-space: normal;
-    word-break: keep-all;
-  }
+  font-size: clamp(1.5rem, 5vw, 3.5rem);     /* Step 1: Responsive font size */
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+  padding: 0 16px;                           /* Step 2: Horizontal padding */
+  line-height: 1.2;
+  white-space: normal;
+  word-wrap: break-word;                     /* Step 3: Allow clean wrapping */
+  max-width: 90vw;                           /* Step 2: Prevent edge-to-edge stacking */
+  text-wrap: balance;                        /* Step 3 (optional): Smart line breaks */
+}
      
   /*.title-overlay {
     font-size: 16px;
