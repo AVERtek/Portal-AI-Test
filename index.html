@@ -13,8 +13,7 @@
       font-weight: 400;
       color: white;
       background-color: black;
-      overflow: scroll;
-      -webkit-overflow-scrolling: touch;
+      overflow-x: hidden;
     }
 
     #bg-video {
@@ -36,109 +35,97 @@
     .logo-image {
       max-width: 350px;
       display: block;
-      margin: 40px auto 0 auto; /* top | right | bottom | left */
+      margin: 40px auto 0 auto;
       padding: 20px;
+      transition: transform 0.3s ease;
     }
 
-   .logo-image {
-      padding: 20px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+    .logo-image:hover { transform: scale(1.05); }
 
-  .logo-image:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
-    }
-
-  .headline {
-    font-family: 'Area', sans-serif;
-    font-size: clamp(2rem, 6vw, 4rem); /* Try 3 or 4rem only for static size 1rem=16px */
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    margin: 0 auto;
-    padding: 12px;
+    .headline {
+      font-family: 'Area', sans-serif;
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: bold;
+      color: white;
+      text-align: center;
+      margin: 0 auto;
+      padding: 12px;
     }
     
     .ui-overlay {
-      position: fixed;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
+      position: relative;
       z-index: 10;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       gap: 12px;
+      padding-bottom: 50px;
     }
 
-.scene-button-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: fit-content;
-}
+    .scene-button-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 450px;
+    }
 
-.scene-button {
-  width: 100%;
-  margin-bottom: 12px; /* Adjust spacing as needed */
-  min-width: 350px;
-  max-width: 100%;
-  text-align: center;
-  padding: 10px 16px;
-  box-sizing: border-box;
-  background: rgba(250,70,22,1);
-  border: 1px solid white;
-  font-size: 18px;
-  color: white;
-  border-radius: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-}
+    .scene-button {
+      width: 90%;
+      margin-bottom: 12px;
+      cursor: pointer;
+      text-align: center;
+      padding: 12px 16px;
+      background: rgba(250,70,22,1); /* Original Orange */
+      border: 1px solid white;
+      font-size: 18px;
+      color: white;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .scene-button:hover { background: rgba(220,60,15,1); }
+
     .icon {
       width: 28px;
       height: 28px;
       margin-right: 10px;
-      vertical-align: middle;
+      object-fit: contain;
     }
 
     .ar-launch-button {
       position: fixed;
-      top: 100px;
+      top: 120px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 30;
       padding: 20px 30px;
-      font-size: 32px;
-      background-color: #00cc66;
+      font-size: 28px;
+      background-color: #00cc66; /* Original Green */
       color: white;
-      border: 1px solid white;
+      border: 2px solid white;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.6s ease;
-    }
-
-    .ar-launch-button:not(.hidden) {
-      opacity: 1;
+      display: none; /* Logic controlled */
     }
 
     .close-button {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 25;
-      background: #ff4444;
+      bottom: 30px;
+      right: 30px;
+      z-index: 30;
+      background: #ff4444; /* Original Red */
       color: white;
       border: none;
-      padding: 12px 18px;
-      font-size: 14px;
+      padding: 15px 25px;
+      font-size: 16px;
       cursor: pointer;
       border-radius: 8px;
+      display: none;
     }
 
     model-viewer {
@@ -148,13 +135,7 @@
       width: 100vw;
       height: 100vh;
       z-index: 5;
-      background-color: transparent;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .hidden {
-      display: none !important;
+      display: none;
     }
 
     #progress-bar {
@@ -164,8 +145,7 @@
       width: 0%;
       height: 4px;
       background: #fa4616;
-      z-index: 15;
-      transition: width 0.3s ease;
+      z-index: 100;
     }
 
     .title-overlay {
@@ -174,256 +154,134 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.8);
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 36px;
       z-index: 50;
-      opacity: 1;
       transition: opacity 1s ease;
     }
 
-    .title-overlay.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-     .title-overlay h1 {
-  font-size: clamp(1rem, 6vw, 4rem);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-  padding: 0 16px;
-  }
-     
-   @media (max-width: 768px) {
-  #bg-video {
-    height: auto;
-    min-height: 100vh;
-  }
-
-  .ui-overlay {
-    bottom: 20px;
-    gap: 8px;
-    transform: translateX(-50%) translateY(0); /* optional tweak if buttons are centered */
-  }
-
-  .scene-button {
-    width: 85%;
-    font-size: 12px;
-  }
-
-  .logo-image {
-    max-width: 200px;
-    padding: 8px;
-  }
-
-  .ar-launch-button {
-    font-size: 18px;
-    padding: 16px 24px;
-    top: 80px;
-  }
-
- .title-overlay {
-    font-size: 16px;
-    padding: 0 16px;
-    text-align: center;
-  }
-
-  .title-overlay h1 {
-    font-size: clamp(2rem, 5vw, 4rem);  /* Responsive font size */
-    font-weight: 600;
-    text-align: center;
-    margin: 0 auto;
-    padding: 0 16px;
-    line-height: 1.2;
-    white-space: normal;                   /* Allow wrapping */
-    word-wrap: break-word;                /* Break long words if needed */
-    max-width: 90vw;                      /* Prevent edge-to-edge overflow */
-    text-wrap: balance;                   /* Smart line breaks (modern browsers) */
-  }
-}
+    .title-overlay.hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <!-- Background Construction Video -->
+  <div id="progress-bar"></div>
+
   <video id="bg-video" autoplay muted loop playsinline>
     <source src="video/V7_best_8598739-uhd_3840_2160_30fps.mp4" type="video/mp4" />
   </video>
 
-  <!-- Intro Title Overlay -->
   <div id="intro-title" class="title-overlay">
-    <h1>Pre-Leasing Our Future Apartment Homes Today!</h1>
+    <h1 style="text-align: center; padding: 20px;">Pre-Leasing Our Future Apartment Homes Today!</h1>
   </div>
 
-  <!-- Transition Title Overlay -->
-  <div id="transition-title" class="title-overlay hidden">
-    <h2>Experience What's Coming...</h2>
-  </div>
+  <div id="main-content">
+    <img class="logo-image" src="images/P11 Logo_w_trans.png" alt="Logo" />
+    <h1 class="headline">PRE-LEASING NOW!</h1>
 
-  <!-- Logo Title Header -->
-  <div id="headerContainer" class="container">
-    <div class="card">
-      <img class="logo-image" src="images/P11 Logo_w_trans.png" alt="Logo" />
-      <<h1 class="headline">PRE-LEASING NOW!</h1>
-    </div>
-  </div>
-
-<!-- Scene Buttons -->
-<div class="ui-overlay" id="sceneButtons">
-  <div class="scene-button-group">
+    <div class="ui-overlay">
+      <div class="scene-button-group">
+        
         <div class="scene-button" onclick="launchAR('Models/enter_the_portal_12.glb', 'Models/ENTER_THE_PORTAL_12.usdz', 'Sound/Building_Audio.mp3')">
-      <img src="icons/Portal 2.png" alt="Portal" class="icon" /> 4D/AR Portal: Experience Our Future Now
-        <!--<div class="scene-button" onclick="launchAR('Models/AR-Building Portal.glb', 'Models/AR-Code-1637477629846.usdz', 'Sound/Building_Audio.mp3')">
-      <img src="icons/Portal 2.png" alt="Portal" class="icon" /> 4D/AR Portal: Completed Construction -->
-    </div>
-    <div class="scene-button" onclick="window.open('https://g.co/gemini/share/6e6ac2763d4e', '_blank')">
-      <img src="icons/Story Icon 3.png" alt="Story" class="icon" /> Storytime: Why Apartment Home Living
-    </div>
-    <div class="scene-button" onclick="window.open('video/Bailey_Final_1.mp4', '_blank')">
-      <img src="icons/Dog icon 2.png" alt="Bailey" class="icon" /> Spokesmodel: Meet Bailey
-    </div>
-    <div class="scene-button" onclick="launchAR('Models/the_charles_floorplan_final_v12.glb', 'Models/THE_CHARLES_FLOORPLAN_FINAL_v12C.usdz', 'Sound/Charles_FP_Audio.mp3')">
-      <img src="icons/Floorplan icon 3.jpg" alt="Floorplan" class="icon" /> 4D/AR Floorplan: Walk-Through Model
-    </div>
-    <div class="scene-button" onclick="window.open('https://avertek.github.io/Portal-Breadcrumb/', '_blank')">
-      <img src="icons/Breadcrumb 1 icon.png" alt="Story" class="icon" /> Breadcrumb Links: Get the Inside Information!
+          <img src="icons/Portal 2.png" class="icon" /> 4D/AR Portal: Experience Our Future Now
+        </div>
+
+        <a href="https://g.co/gemini/share/6e6ac2763d4e" target="_blank" class="scene-button">
+          <img src="icons/Story icon 3.png" class="icon" /> Storytime: Why Apartment Home Living
+        </a>
+
+        <a href="video/Bailey_Final_1.mp4" target="_blank" class="scene-button">
+          <img src="icons/Dog icon 2.png" class="icon" /> Spokesmodel: Meet Bailey
+        </a>
+
+        <div class="scene-button" onclick="launchAR('Models/the_charles_floorplan_final_v12.glb', 'Models/THE_CHARLES_FLOORPLAN_FINAL_v12C.usdz', 'Sound/Charles_FP_Audio.mp3')">
+          <img src="icons/Floorplan icon 3.jpg" class="icon" /> 4D/AR Floorplan: Walk-Through Model
+        </div>
+
+        <a href="https://avertek.github.io/Portal-Breadcrumb/" target="_blank" class="scene-button">
+          <img src="icons/Breadcrumb 1 icon.png" class="icon" /> Breadcrumb Links: Get Inside Info!
+        </a>
+
+      </div>
     </div>
   </div>
-</div>
 
-  <!-- AR Launch Button -->
-  <button class="ar-launch-button hidden" onclick="activateAR()">Experience 4D/AR</button>
+  <button id="arLaunchBtn" class="ar-launch-button" onclick="activateAR()">Experience 4D/AR</button>
+  <button id="closeBtn" class="close-button" onclick="closeAR()">✖ Close UX</button>
 
-  <!-- Close Button -->
-  <button class="close-button hidden" onclick="closeAR()">✖ Close UX</button>
-
-  <!-- Progress Bar -->
-  <div id="progress-bar"></div>
-
-  <!-- Audio Element -->
-  <audio id="arAudio" preload="auto"></audio>
-
-  <!-- Model Viewer -->
   <model-viewer id="arViewer"
-    alt="AR Experience"
-    ar
-    ar-modes="webxr scene-viewer quick-look"
+    ar ar-modes="webxr scene-viewer quick-look"
     camera-controls
-    autoplay
-    interaction-prompt="none"
-    reveal="auto"
-    loading="eager"
-    shadow-intensity="1"
-    exposure="1"
     environment-image="neutral"
-    style="display: none;">
+    exposure="1.0"
+    interaction-prompt="none">
   </model-viewer>
 
-  <!-- <model-viewer camera-controls touch-action="pan-y"  
-                  environment-image="images/WebPortal Skybox1024.hdr" 
-                  loading="eager" src="Models/scene.gltf" id="model-viewer" id="reveal" exposure="1" shadow-intensity="1" ar ar-modes="webxr scene-viewer quick-look" ios-src="Models/Nov1PoolParty.reality"
-                    alt="NOHO WEST" auto-rotate-delay="0" ar-scale="auto"
-                    slot= "progress-bar" style="z-index: 1; width: 100%; height: 480px; position: static; ">
-                    <button slot="ar-button" style="z-index: 9; background-color: #4D008C; border-radius: 8px; border: 1 px solid white; position: absolute; 
-                    top: 2px; right: 0; height: 40px; width: auto; ">
+  <audio id="arAudio" preload="auto"></audio>
 
-                     👆 <b style="color:#FFFFFF;"><strong>EXPLORE AR HERE</strong></b></button> -->
-    
   <script>
     const viewer = document.getElementById('arViewer');
-    const arButton = document.querySelector('.ar-launch-button');
-    const closeButton = document.querySelector('.close-button');
-    const progressBar = document.getElementById('progress-bar');
-    const bgVideo = document.getElementById('bg-video');
-    const introTitle = document.getElementById('intro-title');
-    const transitionTitle = document.getElementById('transition-title');
-    const sceneButtons = document.getElementById('sceneButtons');
-    const headerContainer = document.getElementById('headerContainer');
+    const arBtn = document.getElementById('arLaunchBtn');
+    const closeBtn = document.getElementById('closeBtn');
     const arAudio = document.getElementById('arAudio');
+    const mainContent = document.getElementById('main-content');
+    const bgVideo = document.getElementById('bg-video');
 
-    // Intro overlay fade-out and removal
+    // Remove intro
     window.addEventListener('load', () => {
       setTimeout(() => {
-        introTitle.classList.add('fade-out');
-        introTitle.addEventListener('transitionend', () => {
-          introTitle.style.display = 'none';
-        }, { once: true });
-      }, 4000); // Show intro for 4 seconds
+        document.getElementById('intro-title').style.opacity = '0';
+        setTimeout(() => document.getElementById('intro-title').classList.add('hidden'), 1000);
+      }, 3000);
     });
 
-    // Launch AR scene with audio
-    function launchAR(glbPath, usdzPath, audioPath) {
-      transitionTitle.classList.remove('hidden');
-      sceneButtons.classList.add('hidden');
-      headerContainer.classList.add('hidden');
+    function launchAR(glb, usdz, audioPath) {
+      // Hide Main UI
+      mainContent.style.display = 'none';
+      bgVideo.style.opacity = '0.3';
+      
+      // Setup Viewer
+      viewer.style.display = 'block';
+      viewer.src = glb;
+      viewer.setAttribute('ios-src', usdz);
 
-      setTimeout(() => {
-        transitionTitle.classList.add('hidden');
-        viewer.setAttribute('src', glbPath);
-        viewer.setAttribute('ios-src', usdzPath);
-        viewer.style.display = 'block';
-        viewer.style.opacity = '1';
-        arButton.classList.remove('hidden');
-        closeButton.classList.remove('hidden');
-        bgVideo.classList.add('fade-out');
-
-        // Play scene-specific audio
+      // Play Audio
+      if(audioPath) {
         arAudio.src = audioPath;
-        arAudio.currentTime = 0;
-        arAudio.play().catch(err => {
-          console.warn("Audio playback blocked:", err);
-        });
-      }, 3000);
+        arAudio.play().catch(e => console.log("Audio blocked until interaction"));
+      }
+
+      // Show Controls
+      arBtn.style.display = 'block';
+      closeBtn.style.display = 'block';
     }
 
-    // Activate AR mode
     function activateAR() {
       if (viewer.canActivateAR) {
         viewer.activateAR();
       } else {
-        alert("AR is only supported on compatible mobile devices.");
+        alert("AR is supported on compatible mobile devices (iOS Safari/Android Chrome).");
       }
     }
 
-    // Close AR scene and reset UI
     function closeAR() {
-      viewer.style.opacity = '0';
-      setTimeout(() => {
-        viewer.style.display = 'none';
-        viewer.removeAttribute('src');
-        viewer.removeAttribute('ios-src');
-      }, 300);
-      arButton.classList.add('hidden');
-      closeButton.classList.add('hidden');
-      sceneButtons.classList.remove('hidden');
-      headerContainer.classList.remove('hidden');
-      bgVideo.classList.remove('fade-out');
-
-      // Stop and reset audio
+      viewer.style.display = 'none';
+      viewer.src = '';
+      arBtn.style.display = 'none';
+      closeBtn.style.display = 'none';
+      mainContent.style.display = 'block';
+      bgVideo.style.opacity = '1';
       arAudio.pause();
-      arAudio.currentTime = 0;
     }
 
-    // Progress bar updates
-    viewer.addEventListener('progress', (event) => {
-      const percent = Math.round(event.detail.totalProgress * 100);
-      progressBar.style.width = percent + '%';
-    });
-
-    viewer.addEventListener('load', () => {
-      setTimeout(() => {
-        progressBar.style.width = '0%';
-      }, 500);
-    });
-
-    viewer.addEventListener('error', (e) => {
-      console.error("Model Viewer Error:", e);
-      alert("Failed to load AR model. Please check file paths and compatibility.");
+    viewer.addEventListener('progress', (e) => {
+      document.getElementById('progress-bar').style.width = (e.detail.totalProgress * 100) + '%';
+      if(e.detail.totalProgress === 1) {
+        setTimeout(() => document.getElementById('progress-bar').style.width = '0%', 500);
+      }
     });
   </script>
 </body>
