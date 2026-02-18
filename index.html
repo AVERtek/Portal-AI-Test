@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AR Portal Experience</title>
+  <title>AR Vault Portal Experience</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
      body {
@@ -39,8 +39,6 @@
       padding: 20px;
       transition: transform 0.3s ease;
     }
-
-    .logo-image:hover { transform: scale(1.05); }
 
     .headline {
       font-family: 'Area', sans-serif;
@@ -85,10 +83,7 @@
       align-items: center;
       justify-content: center;
       text-decoration: none;
-      transition: background 0.2s;
     }
-
-    .scene-button:hover { background: rgba(220,60,15,1); }
 
     .icon {
       width: 28px;
@@ -110,7 +105,7 @@
       border: 2px solid white;
       border-radius: 12px;
       cursor: pointer;
-      display: none; /* Logic controlled */
+      display: none;
     }
 
     .close-button {
@@ -162,8 +157,6 @@
       z-index: 50;
       transition: opacity 1s ease;
     }
-
-    .title-overlay.hidden { display: none; }
   </style>
 </head>
 <body>
@@ -185,8 +178,8 @@
     <div class="ui-overlay">
       <div class="scene-button-group">
         
-        <div class="scene-button" onclick="launchAR('Models/enter_the_portal_12.glb', 'Models/ENTER_THE_PORTAL_12.usdz', 'Sound/Building_Audio.mp3')">
-          <img src="icons/Portal 2.png" class="icon" /> 4D/AR Portal: Experience Our Future Now
+        <div class="scene-button" onclick="launchAR('Models/Vault Animation_03.glb', 'Models/BankVault.reality', 'Sound/Building_Audio.mp3')">
+          <img src="icons/Portal 2.png" class="icon" /> 4D/AR Vault: Unlock Our Future Now
         </div>
 
         <a href="https://g.co/gemini/share/6e6ac2763d4e" target="_blank" class="scene-button">
@@ -215,8 +208,10 @@
   <model-viewer id="arViewer"
     ar ar-modes="webxr scene-viewer quick-look"
     camera-controls
+    autoplay
+    animation-name="*" 
+    shadow-intensity="1"
     environment-image="neutral"
-    exposure="1.0"
     interaction-prompt="none">
   </model-viewer>
 
@@ -230,31 +225,27 @@
     const mainContent = document.getElementById('main-content');
     const bgVideo = document.getElementById('bg-video');
 
-    // Remove intro
     window.addEventListener('load', () => {
       setTimeout(() => {
         document.getElementById('intro-title').style.opacity = '0';
-        setTimeout(() => document.getElementById('intro-title').classList.add('hidden'), 1000);
+        setTimeout(() => document.getElementById('intro-title').style.display = 'none', 1000);
       }, 3000);
     });
 
-    function launchAR(glb, usdz, audioPath) {
-      // Hide Main UI
+    function launchAR(glb, iosSrc, audioPath) {
       mainContent.style.display = 'none';
       bgVideo.style.opacity = '0.3';
       
-      // Setup Viewer
       viewer.style.display = 'block';
       viewer.src = glb;
-      viewer.setAttribute('ios-src', usdz);
+      // Using ios-src for the BankVault.reality file
+      viewer.setAttribute('ios-src', iosSrc);
 
-      // Play Audio
       if(audioPath) {
         arAudio.src = audioPath;
-        arAudio.play().catch(e => console.log("Audio blocked until interaction"));
+        arAudio.play().catch(e => console.log("Audio waiting for interaction"));
       }
 
-      // Show Controls
       arBtn.style.display = 'block';
       closeBtn.style.display = 'block';
     }
@@ -262,8 +253,6 @@
     function activateAR() {
       if (viewer.canActivateAR) {
         viewer.activateAR();
-      } else {
-        alert("AR is supported on compatible mobile devices (iOS Safari/Android Chrome).");
       }
     }
 
